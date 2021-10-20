@@ -94,7 +94,7 @@
                       sm:text-base
                       mb-2
                     "
-                    >ETH addres / ENS name</label
+                    >ETH address / ENS name</label
                   >
                   <input
                     name="eth"
