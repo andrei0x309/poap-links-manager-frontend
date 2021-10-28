@@ -19,7 +19,7 @@
     "css-loader": "^6.3.0",
     "dotenv": "^10.0.0",
     "ethers": "^5.5.1",
-    "node-fetch": "^3.0.0",
+    "node-fetch": "^2.6.5",
     "postcss": "^7",
     "register-service-worker": "^1.7.1",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.0.2",
