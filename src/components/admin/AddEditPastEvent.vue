@@ -4,7 +4,7 @@
       <!-- text - start -->
       <div class="mb-10 md:mb-16">
         <h2 class="text-2xl lg:text-3xl font-bold text-center mb-4 md:mb-6">
-          {{ props.add ? `Add Past Event` : `Edit Past Event` }}
+          {{ props.type === "add" ? `Add Past Event` : `Edit Past Event` }}
         </h2>
       </div>
       <!-- text - end -->
@@ -17,7 +17,8 @@
           >
           <input
             name="claim-year"
-            v-model="props.pastEventUrl"
+            v-model="url"
+            @change="inputChanged()"
             class="
               w-full
               bg-gray-50
@@ -42,7 +43,8 @@
           >
           <input
             name="claim-year"
-            v-model="props.pastEventDate"
+            v-model="eventDate"
+            @change="inputChanged()"
             class="
               w-full
               bg-gray-50
@@ -69,7 +71,8 @@
           >
           <textarea
             name="claim-links"
-            v-model="props.pastEventDescription"
+            v-model="description"
+            @change="inputChanged()"
             class="
               w-full
               h-64
@@ -112,7 +115,7 @@
               dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200
             "
           >
-            {{ props.add ? `Add Past Event` : `Edit Past Event` }}
+            {{ props.type === "add" ? `Add Past Event` : `Edit Past Event` }}
           </button>
         </div>
       </form>
@@ -122,7 +125,7 @@
 </template>
 
 <script>
-import { defineComponent } from "vue";
+import { defineComponent, ref } from "vue";
 
 export default defineComponent({
   name: "AddEditPastEvent",
@@ -144,9 +147,26 @@ export default defineComponent({
       default: "add",
     },
   },
+  emits: ["update:modelValue"],
   components: {},
-  setup(props) {
+  setup(props, { emit }) {
+    const url = ref(props.pastEventUrl);
+    const eventDate = ref(props.pastEventDate);
+    const description = ref(props.pastEventDescription);
+
+    const inputChanged = () => {
+      emit("update:modelValue", {
+        url: url.value,
+        date: eventDate.value,
+        description: description.value,
+      });
+    };
+
     return {
+      url,
+      eventDate,
+      description,
+      inputChanged,
       props,
     };
   },

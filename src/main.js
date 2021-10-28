@@ -6,6 +6,8 @@ import { createHead } from "@vueuse/head";
 import { Dropdown, Button, Sidebar, Tabs, Modal } from "@oruga-ui/oruga-next";
 import "@oruga-ui/oruga-next/dist/oruga.css";
 import "atropos/atropos.min.css";
+import SplitInput from "vue-split-input";
+
 const ENDPOINTBASE = "https://yup-poap-backend.deno.dev";
 
 createApp(App)
@@ -15,6 +17,7 @@ createApp(App)
   .use(Sidebar)
   .use(Tabs)
   .use(Modal)
+  .use(SplitInput)
   .use(createHead())
   .provide("endPointBase", ENDPOINTBASE)
   .provide("routes", routes)

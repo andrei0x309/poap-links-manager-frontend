@@ -207,14 +207,22 @@
                   <table
                     class="
                       table
-                      text-gray-400
+                      dark:text-gray-400
+                      text-gray-700
                       border-separate
                       space-y-6
                       text-sm
                     "
-                    style="min-width: 55vw"
+                    style="min-width: calc(20rem + 30vw)"
                   >
-                    <thead class="bg-gray-800 text-gray-500">
+                    <thead
+                      class="
+                        dark:bg-gray-800
+                        bg-gray-200
+                        dark:text-gray-500
+                        text-gray-800
+                      "
+                    >
                       <tr>
                         <th class="p-2 text-center">Claim Date</th>
                         <th class="p-2 text-center">Action</th>
@@ -224,7 +232,7 @@
                       <tr
                         v-for="(entry, index) in dbClaimLinks"
                         :key="index"
-                        class="bg-gray-800"
+                        class="dark:bg-gray-800 bg-gray-200"
                       >
                         <td class="p-2">{{ entry.claimDate }}</td>
                         <td class="p-2">
@@ -241,43 +249,6 @@
                                 fill="currentColor"
                                 d="M.2 10a11 11 0 0 1 19.6 0A11 11 0 0 1 .2 10zm9.8 4a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm0-2a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"
                               />
-                            </svg>
-                          </button>
-                          <button
-                            class="text-gray-400 hover:text-gray-100 mx-2"
-                          >
-                            <svg
-                              enable-background="new 0 0 45 45"
-                              class="inline w-8"
-                              id="Layer_1"
-                              version="1.1"
-                              viewBox="0 0 45 45"
-                              xml:space="preserve"
-                              xmlns="http://www.w3.org/2000/svg"
-                              xmlns:xlink="http://www.w3.org/1999/xlink"
-                            >
-                              <g>
-                                <rect
-                                  fill="currentColor"
-                                  height="23"
-                                  transform="matrix(-0.7071 -0.7072 0.7072 -0.7071 38.2666 48.6029)"
-                                  width="11"
-                                  x="23.7"
-                                  y="4.875"
-                                />
-                                <path
-                                  d="M44.087,3.686l-2.494-2.494c-1.377-1.377-3.61-1.377-4.987,0L34.856,2.94l7.778,7.778l1.749-1.749   C45.761,7.593,45.465,5.063,44.087,3.686z"
-                                  fill="#231F20"
-                                />
-                                <polygon
-                                  fill="#231F20"
-                                  points="16,22.229 16,30 23.246,30  "
-                                />
-                                <path
-                                  d="M29,40H5V16h12.555l5-5H3.5C1.843,11,0,11.843,0,13.5v28C0,43.156,1.843,45,3.5,45h28   c1.656,0,2.5-1.844,2.5-3.5V23.596l-5,5V40z"
-                                  fill="#231F20"
-                                />
-                              </g>
                             </svg>
                           </button>
                           <button
@@ -388,9 +359,10 @@
           </o-tab-item>
           <o-tab-item label="Add Past Event" value="add-past-event">
             <AddEditPastEvent
-              pastEventUrl
-              pastEventDate
-              pastEventDescription
+              v-model="pastEventComponentData"
+              :pastEventUrl="pastEventComponentData.url"
+              :pastEventDate="pastEventComponentData.date"
+              :pastEventDescription="pastEventComponentData.description"
               :clickFn="addEditPastEventFn"
               type="add"
             />
@@ -415,7 +387,7 @@
                       space-y-6
                       text-sm
                     "
-                    style="min-width: 55vw"
+                    style="min-width: calc(20rem + 30vw)"
                   >
                     <thead
                       class="
@@ -494,7 +466,7 @@
                               dark:text-gray-400 dark:hover:text-gray-100
                               ml-2
                             "
-                            @click.prevent="deleteClaimLinksFn(entry.id, index)"
+                            @click.prevent="deletePastEventFn(entry.id, index)"
                           >
                             <svg
                               class="inline w-6"
@@ -583,6 +555,8 @@
   </o-modal>
 
   <o-modal v-model:active="editPastEventModal">
+    <SimpleSpinner :show="simpleSpinnerShow" size="0.7rem" />
+
     <Alert
       :hidden="alertHidden"
       :title="alertTitle"
@@ -590,19 +564,22 @@
       :type="alertType"
       class="m-2"
     />
+
     <AddEditPastEvent
-      pastEventUrl
-      pastEventDate
-      pastEventDescription
+      v-if="!simpleSpinnerShow"
+      v-model="pastEventComponentData"
+      :pastEventUrl="pastEventComponentData.url"
+      :pastEventDate="pastEventComponentData.date"
+      :pastEventDescription="pastEventComponentData.description"
       :clickFn="addEditPastEventFn.bind(null, pastEventEditId)"
       type="edit"
     />
   </o-modal>
 </template>
-
 <script>
 // @ is an alias to /src
 import Alert from "@/components/Alert";
+import SimpleSpinner from "@/components/admin/SimpleSpinner";
 import AddEditPastEvent from "@/components/admin/AddEditPastEvent";
 import { useRoute, useRouter } from "vue-router";
 import { onMounted, inject, reactive, computed, ref, watch } from "vue";
@@ -614,6 +591,7 @@ export default {
   components: {
     Alert,
     AddEditPastEvent,
+    SimpleSpinner,
   },
   setup() {
     const endpointBase = inject("endPointBase");
@@ -660,11 +638,9 @@ export default {
 
     const claimPassword = ref("");
 
-    const pastEventUrl = ref("");
-    const pastEventDate = ref("");
-    const pastEventDescription = ref("");
+    const pastEventComponentData = ref({ url: "", description: "", date: "" });
 
-    const pastEventEditId = ref(0);
+    const pastEventEditId = ref(null);
 
     const dbPastEvents = ref([]);
 
@@ -672,6 +648,8 @@ export default {
     const alertTitle = ref("");
     const alertMessage = ref("");
     const alertType = ref("");
+
+    const simpleSpinnerShow = ref(false);
 
     const route = useRoute();
     const router = useRouter();
@@ -736,9 +714,9 @@ export default {
       const isEdit = pastEventEditId.value !== null;
 
       if (
-        pastEventUrl.value === "" ||
-        pastEventDate.value === "" ||
-        pastEventDescription.value === ""
+        pastEventComponentData.value.url === "" ||
+        pastEventComponentData.value.date === "" ||
+        pastEventComponentData.value.description === ""
       ) {
         showAlertError("Error", "Please fill in all fields");
         return;
@@ -748,26 +726,64 @@ export default {
         ? `${endpointBase}/edit-past-event`
         : `${endpointBase}/add-past-event`;
 
-      const res = await postDataWithAuth(url, {
-        url: pastEventUrl.value,
-        date: pastEventDate.value,
-        description: pastEventDescription.value,
-        id: isEdit ? pastEventEditId.value : null,
-      });
+      const defPayload = {
+        url: pastEventComponentData.value.url,
+        date: pastEventComponentData.value.date,
+        description: pastEventComponentData.value.description,
+      };
+
+      isEdit && (defPayload.id = pastEventEditId.value);
+
+      const res = await postDataWithAuth(url, defPayload);
       if (res.ok) {
         showAlertOk(
           "Success",
-          isEdit ? "Past event added" : "Past event edited"
+          isEdit ? "Past event edited" : "Past event added"
         );
-        if (isEdit) pastEventEditId.value = null;
+        if (isEdit) {
+          dbPastEvents.value.splice(
+            dbPastEvents.value.findIndex(
+              (pastEvent) => pastEvent.id === pastEventEditId.value
+            ),
+            1,
+            { ...pastEventComponentData.value, id: pastEventEditId.value }
+          );
+        }
       } else {
         showAlertError("Error", (await res.json()).error);
       }
     };
 
-    const openEditPastEventFn = (id) => {
+    const deletePastEventFn = async (id, index) => {
+      await confirmDialogOpenFn("Confirm Delete", "Are you sure?");
+      if (!confrimDialogResult.value) return;
+      const res = await postDataWithAuth(`${endpointBase}/del-past-event`, {
+        id,
+      });
+      if (res.ok) {
+        dbPastEvents.value.value.splice(index, 1);
+        showAlertOk("Success", "Past Event deleted");
+      } else showAlertError("Error", (await res.json()).error);
+    };
+
+    const openEditPastEventFn = async (id) => {
       pastEventEditId.value = id;
-      editPastEventModal.value = true;
+      simpleSpinnerShow.value = true;
+      editPastEventModal.value = false;
+      const pastEvent = await postDataWithAuth(
+        `${endpointBase}/get-past-event`,
+        { id }
+      );
+      if (pastEvent.ok) {
+        const pastEventData = await pastEvent.json();
+        pastEventComponentData.value.url = pastEventData.url;
+        pastEventComponentData.value.description = pastEventData.description;
+        pastEventComponentData.value.date = pastEventData.date;
+        editPastEventModal.value = true;
+      } else {
+        showAlertError("Error", (await pastEvent.json()).error);
+      }
+      simpleSpinnerShow.value = false;
     };
 
     const getPastEvents = async () => {
@@ -777,7 +793,6 @@ export default {
     };
 
     const deleteClaimLinksFn = async (id, index) => {
-      console.log("here");
       await confirmDialogOpenFn("Confirm Delete", "Are you sure?");
       if (!confrimDialogResult.value) return;
       console.log(id);
@@ -860,6 +875,11 @@ export default {
         alertHidden.value = true;
 
         switch (newValue) {
+          case "add-past-event":
+            editPastEventModal.value = false;
+            pastEventEditId.value = null;
+            break;
+
           case "edit-claim-links":
             getDbClaimLinks();
 
@@ -871,10 +891,12 @@ export default {
 
           case "edit-claim-pass":
             getClaimPassword();
+
             break;
 
           case "log-out":
             logout();
+
             break;
 
           default:
@@ -910,9 +932,7 @@ export default {
       claimPassword,
       claimPasswordChangeFn,
       dbClaimLinks,
-      pastEventUrl,
-      pastEventDate,
-      pastEventDescription,
+      pastEventComponentData,
       confirmDialogCancelFn,
       confirmDialogConfirmFn,
       confirmDialogOpen,
@@ -925,6 +945,8 @@ export default {
       pastEventEditId,
       openEditPastEventFn,
       editPastEventModal,
+      simpleSpinnerShow,
+      deletePastEventFn,
     };
   },
 };

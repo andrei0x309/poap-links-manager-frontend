@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="!props.hidden"
+    v-if="!(props.hidden || hiddenLocal)"
     class="shadow-md p-4 flex flex-row rounded-lg relative"
   >
     <div
@@ -14,7 +14,7 @@
     ></div>
     <b class="p-1">{{ props.title }}</b>
     <p class="p-1 mr-1">{{ props.message }}</p>
-    <a class="h-5 w-5 text-gray-500 inline-block p-1">
+    <a @click="close()" class="h-5 w-5 text-gray-500 inline-block p-1 hover:">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         class="h-5 w-5 absolute"
@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import { defineComponent } from "vue";
+import { defineComponent, ref } from "vue";
 
 export default defineComponent({
   name: "Alert",
@@ -54,8 +54,16 @@ export default defineComponent({
   },
   components: {},
   setup(props) {
+    const hiddenLocal = ref(false);
+
+    const close = () => {
+      hiddenLocal.value = true;
+    };
+
     return {
       props,
+      close,
+      hiddenLocal,
     };
   },
 });

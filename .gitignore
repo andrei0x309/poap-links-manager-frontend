@@ -5,7 +5,6 @@ node_modules
 /src/db/generate.mjs
 /.package-lock.json
 /bin
-/yarn.lock
 
 # local env files
 .env

@@ -84,7 +84,7 @@
 
             <form class="max-w-lg border rounded-lg mx-auto">
               <div class="flex flex-col gap-4 p-4 md:p-8">
-                <div>
+                <div v-if="!hasMetaMask">
                   <label
                     for="eth"
                     class="
@@ -116,6 +116,44 @@
                     "
                   />
                 </div>
+                <div
+                  @click="metamaskConnect"
+                  class="
+                    block
+                    bg-gray-800
+                    hover:bg-gray-700
+                    active:bg-gray-600
+                    focus-visible:ring
+                    ring-gray-300
+                    text-white text-sm
+                    md:text-base
+                    font-semibold
+                    text-center
+                    rounded-lg
+                    outline-none
+                    transition
+                    duration-100
+                    px-8
+                    py-3
+                    dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200
+                  "
+                  style="cursor: pointer"
+                  v-else-if="!isMetaMaskConnected"
+                >
+                  <MetamaskButton
+                    btnMsg="Connect with Metamask"
+                    size="medium"
+                  />
+                </div>
+                <div v-else>
+                  <p>Your current conected ETH is:</p>
+                  <p>
+                    <b>{{ ethInput }}</b>
+                  </p>
+                  <p class="text-sm">
+                    Switch address from Metamask if you want to use another.
+                  </p>
+                </div>
 
                 <div>
                   <label
@@ -127,10 +165,31 @@
                       sm:text-base
                       mb-2
                     "
-                    >Password from Gather</label
+                    >Digit <b>pin</b> from Gather</label
                   >
-                  <input
-                    name="password"
+                  <div
+                    style="grid-template-columns: repeat(4, 1fr); width: 14rem"
+                    class="grid mx-auto my-4"
+                  >
+                    <split-input
+                      name="password"
+                      v-model="passwordInput"
+                      class-name="w-12 h-8 rounded-sm p-5 font-bold text-lg  bg-gray-50
+                      text-gray-800
+                      border
+                      focus:ring
+                      ring-indigo-300
+                      rounded
+                      outline-none
+                      transition
+                      duration-100
+                      px-3
+                      py-2 dark:bg-gray-800 dark:text-white"
+                      :input-number="4"
+                    />
+                  </div>
+                  <!-- <input
+                   
                     v-model="passwordInput"
                     class="
                       w-full
@@ -147,7 +206,7 @@
                       py-2
                       dark:bg-gray-800 dark:text-white
                     "
-                  />
+                  /> -->
                 </div>
 
                 <button
@@ -241,18 +300,21 @@
 <script>
 // @ is an alias to /src
 import { useRoute, useRouter } from "vue-router";
-import { onMounted, inject, ref, reactive, computed } from "vue";
+import { onMounted, inject, ref, reactive, computed, onUnmounted } from "vue";
 import { useHead } from "@vueuse/head";
 import { postData, nextDayOfWeek } from "@/util/index.js";
 import Alert from "@/components/Alert";
 import { openInNewTab } from "@/util/index.js";
 import Loading from "@/components/Loading";
+import MetamaskButton from "@/components/MetamaskButton";
+import { ethers } from "ethers";
 
 export default {
   name: "Home",
   components: {
     Alert,
     Loading,
+    MetamaskButton,
   },
   setup() {
     const endpointBase = inject("endPointBase");
@@ -276,6 +338,9 @@ export default {
     const claimMsg = ref("");
     const claimETH = ref("");
     const claimENS = ref("");
+
+    const hasMetaMask = ref(false);
+    const isMetaMaskConnected = ref(false);
 
     const currentDate = {
       claimDate: `${d.getUTCFullYear()}-${
@@ -351,6 +416,32 @@ export default {
       loadingShow.value = false;
     };
 
+    const metamaskConnect = async () => {
+      const accounts = await window.ethereum.request({
+        method: "eth_requestAccounts",
+      });
+      console.log(accounts);
+      const account = accounts[0];
+      if (account) {
+        ethInput.value = account;
+        hasMetaMask.value = true;
+        isMetaMaskConnected.value = true;
+      } else {
+        showAlertError("Error", "Please connect to MetaMask");
+      }
+      return accounts;
+    };
+
+    const handleEthChanged = (accounts) => {
+      console.log(accounts);
+      //console.log(ethInput.value);
+      if (accounts.length > 0) {
+        ethInput.value = accounts[0];
+        hasMetaMask.value = true;
+        isMetaMaskConnected.value = true;
+      }
+    };
+
     onMounted(async () => {
       let alreadyClaimed = localStorage.getItem(
         `claim-${currentDate.claimDate}`
@@ -372,7 +463,28 @@ export default {
             await postData(`${endpointBase}/can-claim-links`, currentDate)
           ).json()
         ).can;
+
+        if (typeof window.ethereum !== "undefined") {
+          hasMetaMask.value = true;
+
+          window.ethereum.on("accountsChanged", handleEthChanged);
+
+          const provider = new ethers.providers.Web3Provider(window.ethereum);
+          const accounts = await provider.listAccounts();
+          if (accounts.length > 0) {
+            ethInput.value = accounts[0];
+            console.log(await metamaskConnect());
+            isMetaMaskConnected.value = true;
+          }
+        }
+
         loadingShow.value = false;
+      }
+    });
+
+    onUnmounted(() => {
+      if (hasMetaMask.value) {
+        window.ethereum.removeListener("accountsChanged", handleEthChanged);
       }
     });
 
@@ -402,6 +514,9 @@ export default {
       claimENS,
       loadingShow,
       loadingMsg,
+      hasMetaMask,
+      isMetaMaskConnected,
+      metamaskConnect,
     };
   },
 };
