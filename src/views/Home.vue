@@ -20,18 +20,35 @@
           class="dark:bg-transparent bg-white py-4 sm:py-6 lg:py-8 px-8 mt-4"
         >
           <div v-if="showClaimBlock" class="flex flex-col gap-4 p-4 md:p-8">
+            <img
+              class="w-14 mx-auto"
+              v-if="poapImageUrl"
+              :src="poapImageUrl"
+              alt="POAP"
+            />
             <p class="p-4 mb-4 text-xl">{{ claimMsg }}</p>
-            <p class="p-4 mb-4">
+            <p v-if="claimETH" class="p-4 mb-4">
               ETH: <b>{{ claimETH }}</b>
             </p>
             <p v-if="claimENS" class="p-4 mb-4">
               ENS: <b>{{ claimENS }}</b>
             </p>
-            <p>
-              <a :href="claimLink" rel="noindex">{{ claimLink }}</a>
+            <p class="text-lg blinkTxt" v-if="showSimpleSpinner">
+              [ Getting TX ]
             </p>
+            <SimpleSpinner :show="showSimpleSpinner" size="medium" />
 
-            <button
+            <div class="text-lg" v-if="!(showSimpleSpinner || claimError)">
+              <p>
+                <a
+                  :href="`https://blockscout.com/xdai/mainnet/tx/${claimPOAPtx}`"
+                  target="_blank"
+                  >TX: <b>{{ claimPOAPtx }}</b></a
+                >
+              </p>
+            </div>
+
+            <!-- <button
               @click.prevent="openInNewTab(claimLink)"
               class="
                 block
@@ -54,7 +71,7 @@
               "
             >
               Navigate
-            </button>
+            </button> -->
           </div>
           <div
             v-else-if="isClaimOpen && !loadingShow"
@@ -168,13 +185,13 @@
                     >Digit <b>pin</b> from Gather</label
                   >
                   <div
-                    style="grid-template-columns: repeat(4, 1fr); width: 14rem"
+                    style="grid-template-columns: repeat(5, 1fr); width: 18rem"
                     class="grid mx-auto my-4"
                   >
                     <split-input
                       name="password"
                       v-model="passwordInput"
-                      class-name="w-12 h-8 rounded-sm p-5 font-bold text-lg  bg-gray-50
+                      class-name="w-9 h-8 rounded-sm p-5 font-bold text-lg  bg-gray-50
                       text-gray-800
                       border
                       focus:ring
@@ -185,7 +202,7 @@
                       duration-100
                       px-3
                       py-2 dark:bg-gray-800 dark:text-white"
-                      :input-number="4"
+                      :input-number="5"
                     />
                   </div>
                   <!-- <input
@@ -308,6 +325,7 @@ import { openInNewTab } from "@/util/index.js";
 import Loading from "@/components/Loading";
 import MetamaskButton from "@/components/MetamaskButton";
 import { ethers } from "ethers";
+import SimpleSpinner from "@/components/admin/SimpleSpinner";
 
 export default {
   name: "Home",
@@ -315,6 +333,7 @@ export default {
     Alert,
     Loading,
     MetamaskButton,
+    SimpleSpinner,
   },
   setup() {
     const endpointBase = inject("endPointBase");
@@ -338,9 +357,14 @@ export default {
     const claimMsg = ref("");
     const claimETH = ref("");
     const claimENS = ref("");
+    const claimPOAPtx = ref("");
+    const poapImageUrl = ref("");
+    const claimError = ref(false);
 
     const hasMetaMask = ref(false);
     const isMetaMaskConnected = ref(false);
+
+    const showSimpleSpinner = ref(false);
 
     const currentDate = {
       claimDate: `${d.getUTCFullYear()}-${
@@ -393,6 +417,7 @@ export default {
       }
 
       loadingShow.value = true;
+      claimError.value = false;
 
       const reqData = await postData(`${endpointBase}/request-claim-link`, {
         claimEth: ethInput.value,
@@ -400,20 +425,79 @@ export default {
         claimPassword: passwordInput.value,
       });
       const reqJson = await reqData.json();
-      if (reqJson.error) showAlertError("Error", reqJson.error);
+      if (reqJson.error) {
+        loadingShow.value = false;
+        showAlertError("Error", reqJson.error);
+      }
 
       if (reqJson.link) {
         localStorage.setItem(
           `claim-${currentDate.claimDate}`,
           JSON.stringify(isENS ? { ...reqJson, ENS: ethInput.value } : reqJson)
         );
+        loadingShow.value = false;
+        showClaimBlock.value = true;
+        showSimpleSpinner.value = true;
+
         claimLink.value = reqJson.link;
         claimMsg.value = reqJson.msg;
         claimETH.value = reqJson.by;
         isENS && (claimENS.value = ethInput.value);
-        showClaimBlock.value = true;
+
+        const lastIndex = reqJson.link.lastIndexOf("/");
+        const hash = reqJson.link.substring(lastIndex + 1);
+        const req = await fetch(
+          `https://api.poap.xyz/actions/claim-qr?qr_hash=${hash}`
+        );
+
+        if (req.ok) {
+          const res = await req.json();
+          poapImageUrl.value = res.event.image_url;
+          const claimPayload = {
+            address: reqJson.by,
+            qr_hash: hash,
+            secret: res.secret,
+          };
+          const reqPostClaim = await postData(
+            `https://api.poap.xyz/actions/claim-qr`,
+            claimPayload
+          );
+
+          if (reqPostClaim.status === 400) {
+            showSimpleSpinner.value = false;
+            claimError.value = true;
+            showClaimBlock.value = false;
+            showAlertError("Error", (await reqPostClaim.json).message);
+            return;
+          }
+
+          if (!reqPostClaim.ok) {
+            showSimpleSpinner.value = false;
+            claimError.value = true;
+            showClaimBlock.value = false;
+            showAlertError("Error", "Error while claiming");
+            return;
+          }
+          const checkTx = setInterval(() => {
+            fetch(`https://api.poap.xyz/actions/claim-qr?qr_hash=${hash}`)
+              .then((res) => res.json())
+              .then((res) => {
+                if (res.tx_hash) {
+                  claimPOAPtx.value = res.tx_hash;
+                  if (claimPOAPtx.value) {
+                    clearInterval(checkTx);
+                    showSimpleSpinner.value = false;
+                  }
+                }
+              });
+          }, 500);
+        } else {
+          showAlertError("Error", "Error while claiming");
+          showSimpleSpinner.value = false;
+          claimError.value = true;
+          showClaimBlock.value = false;
+        }
       }
-      loadingShow.value = false;
     };
 
     const metamaskConnect = async () => {
@@ -443,10 +527,18 @@ export default {
     };
 
     onMounted(async () => {
+      const code = "code" in route.params ? route.params.code : null;
+      if (code) {
+        if (String(code).length === 5 && !isNaN(Number(code))) {
+          passwordInput.value = code;
+        }
+      }
       let alreadyClaimed = localStorage.getItem(
         `claim-${currentDate.claimDate}`
       );
+
       if (alreadyClaimed) {
+        claimError.value = true;
         alreadyClaimed = JSON.parse(alreadyClaimed);
         claimLink.value = alreadyClaimed.link;
         claimETH.value = alreadyClaimed.by;
@@ -517,7 +609,23 @@ export default {
       hasMetaMask,
       isMetaMaskConnected,
       metamaskConnect,
+      showSimpleSpinner,
+      claimPOAPtx,
+      poapImageUrl,
+      claimError,
     };
   },
 };
 </script>
+
+<style lang="scss">
+.blinkTxt {
+  animation: blink 2s linear infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+</style>

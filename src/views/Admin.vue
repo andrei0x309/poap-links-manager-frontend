@@ -252,6 +252,38 @@
                             </svg>
                           </button>
                           <button
+                            :class="`text-gray-400 hover:text-gray-100 mx-2 ${
+                              animateCopyLink ? ' blinkTxt ' : ''
+                            }`"
+                            @click.prevent="linksCopyFn(entry.id)"
+                          >
+                            <svg
+                              version="1.1"
+                              viewBox="0 0 30.723 30.723"
+                              class="inline w-8"
+                              style="enable-background: new 0 0 30.723 30.723"
+                              xml:space="preserve"
+                            >
+                              <path
+                                fill="currentColor"
+                                d="M30.716,26.475l0.007-19.877c-0.002-0.613-0.498-1.107-1.107-1.107H15.598c-0.437-0.012-0.773-0.807-0.773-1.111V4.253
+		c0-0.65-0.527-1.18-1.178-1.18H6.188c-0.653,0-1.179,0.529-1.179,1.18V4.38c0,0.309-0.342,1.113-0.786,1.113h0.014
+		C3.631,5.505,3.144,5.997,3.144,6.6l0.004,5.754H0.764c0,0-1.056-0.055-0.685,1.199l2.517,12.922c0,0.65,0.452,1.176,1.104,1.176
+		h26.472C30.823,27.651,30.716,26.475,30.716,26.475z M19.976,24.915l-1.596,1.558c-0.675,0.654-1.767,0.654-2.437-0.008l-1.52-1.5
+		c-0.67-0.664-0.666-1.736,0.008-2.393l1.596-1.557c0.674-0.66,1.768-0.656,2.438,0.006l-0.949,0.939
+		c-0.3-0.1-0.646,0.02-0.883,0.252l-0.985,0.961c-0.338,0.328-0.34,0.865-0.002,1.197l0.91,0.898
+		c0.336,0.332,0.881,0.334,1.219,0.006l0.982-0.961c0.229-0.223,0.352-0.586,0.275-0.871l0.95-0.918
+		C20.651,23.186,20.648,24.257,19.976,24.915z M20.725,19.487c0.226-0.223,0.592-0.221,0.814,0.004
+		c0.227,0.227,0.224,0.592-0.002,0.818l-2.726,2.709c-0.226,0.223-0.593,0.223-0.815-0.002c-0.224-0.227-0.224-0.592,0.002-0.818
+		L20.725,19.487z M25.08,19.887l-1.653,1.611c-0.66,0.646-1.731,0.645-2.392-0.006l0.928-0.908c0.281,0.076,0.65-0.043,0.87-0.26
+		l1.052-1.027c0.332-0.322,0.334-0.85,0.005-1.174l-0.895-0.885c-0.33-0.324-0.866-0.326-1.196-0.004l-1.053,1.027
+		c-0.234,0.227-0.354,0.561-0.256,0.848l-0.947,0.908c-0.657-0.648-0.655-1.701,0.006-2.348l1.654-1.613
+		c0.664-0.645,1.734-0.643,2.395,0.008l1.488,1.475C25.746,18.19,25.744,19.243,25.08,19.887z M29.357,14.02l-0.011,12.975
+		l-2.505-13.91c-0.209-0.764-1.074-0.711-1.074-0.711H4.511V7.962h24.846V14.02z"
+                              />
+                            </svg>
+                          </button>
+                          <button
                             class="text-gray-400 hover:text-gray-100 ml-2"
                             @click.prevent="deleteClaimLinksFn(entry.id, index)"
                           >
@@ -495,7 +527,7 @@
     </div>
   </div>
 
-  <o-modal v-model:active="confirmDialogOpen">
+  <o-modal contentClass="modalDefault" v-model:active="confirmDialogOpen">
     <div class="mb-10 md:mb-16">
       <h2 class="text-xl lg:text-2xl font-bold text-center mt-4 mb-4 md:mb-4">
         {{ confirmDialogTitle }}
@@ -554,7 +586,7 @@
     </div>
   </o-modal>
 
-  <o-modal v-model:active="editPastEventModal">
+  <o-modal contentClass="modalDefault" v-model:active="editPastEventModal">
     <SimpleSpinner :show="simpleSpinnerShow" size="0.7rem" />
 
     <Alert
@@ -574,6 +606,52 @@
       :clickFn="addEditPastEventFn.bind(null, pastEventEditId)"
       type="edit"
     />
+  </o-modal>
+
+  <o-modal contentClass="modalDefault" v-model:active="viewClaimLinkModal">
+    <SimpleSpinner :show="simpleSpinnerShow" size="0.7rem" />
+
+    <Alert
+      :hidden="alertHidden"
+      :title="alertTitle"
+      :message="alertMessage"
+      :type="alertType"
+      class="m-2"
+    />
+    <div v-if="!simpleSpinnerShow">
+      <h2 class="text-lg p-8">Claim Date: {{ currentClaimLink.claimDate }}</h2>
+      <h2 class="text-lg p-8">Links:</h2>
+      <ul class="text-left">
+        <li
+          class="p-4"
+          v-for="(link, index) in currentClaimLink.links"
+          :key="index"
+        >
+          <p>
+            POAP Link:
+            <a :href="link.url" target="_blank"
+              ><b>{{ link.url }}</b></a
+            >
+          </p>
+          <p>
+            APP Link:
+
+            <a :href="`${origin}/code/${link.code}`" target="_blank"
+              ><b>{{ `${origin}/code/${link.code}` }}</b></a
+            >
+          </p>
+          <p>
+            Claimed: <b>{{ link.claimed }}</b>
+          </p>
+          <p>
+            By: <b>{{ link.by }}</b>
+          </p>
+          <p>
+            code: <b>{{ link.code }}</b>
+          </p>
+        </li>
+      </ul>
+    </div>
   </o-modal>
 </template>
 <script>
@@ -595,9 +673,11 @@ export default {
   },
   setup() {
     const endpointBase = inject("endPointBase");
+    const origin = window.location.origin;
     const curentTab = ref("add-claim-links");
 
     const editPastEventModal = ref(false);
+    const viewClaimLinkModal = ref(false);
 
     const confirmDialogOpen = ref(false);
     const confirmDialogTitle = ref("");
@@ -633,15 +713,17 @@ export default {
     const claimLinksMonth = ref("");
     const claimLinksYear = ref("");
     const claimLinksList = ref("");
+    const currentClaimLink = ref({
+      claimDate: "",
+      links: [],
+    });
+    const animateCopyLink = ref(false);
 
     const dbClaimLinks = ref([]);
-
     const claimPassword = ref("");
 
     const pastEventComponentData = ref({ url: "", description: "", date: "" });
-
     const pastEventEditId = ref(null);
-
     const dbPastEvents = ref([]);
 
     const alertHidden = ref(true);
@@ -805,8 +887,44 @@ export default {
       } else showAlertError("Error", (await res.json()).error);
     };
 
+    const linksCopyFn = async (id) => {
+      animateCopyLink.value = true;
+      const res = await postDataWithAuth(`${endpointBase}/get-claim-link`, {
+        id,
+      });
+      if (res.ok) {
+        const claimLinksCode = (await res.json()).links
+          .map((link) => `${origin}/code/${link.code}`)
+          .reduce((p, c) => (c = `${p}${p !== "" ? "\n" : ""}${c}`), "");
+        navigator.clipboard.writeText(claimLinksCode);
+      } else showAlertError("Error", (await res.json()).error);
+      animateCopyLink.value = false;
+    };
+
     const viewClaimLinksFn = async (id) => {
-      id;
+      viewClaimLinkModal.value = true;
+      simpleSpinnerShow.value = true;
+      const res = await postDataWithAuth(`${endpointBase}/get-claim-link`, {
+        id,
+      });
+      simpleSpinnerShow.value = false;
+      if (res.ok) {
+        currentClaimLink.value = await res.json();
+      } else showAlertError("Error", (await res.json()).error);
+    };
+
+    const randUniqueList = (min, max, length) => {
+      const list = [];
+      for (let i = 0; i < length; i++) {
+        for (;;) {
+          const num = ~~(min + Math.random() * (max - min));
+          if (!list.includes(num)) {
+            list.push(num);
+            break;
+          }
+        }
+      }
+      return list;
     };
 
     const addClaimLinksFn = async () => {
@@ -851,11 +969,14 @@ export default {
 
       data.links = [];
 
-      for (const link of linksList) {
+      const codes = randUniqueList(10000, 99999, linksList.length);
+
+      for (const [index, link] of linksList.entries()) {
         data.links.push({
           url: link,
           claimed: false,
           by: "",
+          code: codes[index],
         });
       }
 
@@ -947,7 +1068,29 @@ export default {
       editPastEventModal,
       simpleSpinnerShow,
       deletePastEventFn,
+      viewClaimLinkModal,
+      currentClaimLink,
+      origin,
+      animateCopyLink,
+      linksCopyFn,
     };
   },
 };
 </script>
+
+<style lang="scss">
+.modalDefault {
+  min-width: 10rem;
+  padding: 1rem;
+}
+
+.blinkTxt {
+  animation: blink 2s linear infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+</style>
