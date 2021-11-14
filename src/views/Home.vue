@@ -398,6 +398,13 @@ export default {
       alertType.value = "error";
     };
 
+    const showAlertSuccess = (title, message) => {
+      alertHidden.value = false;
+      alertTitle.value = title;
+      alertMessage.value = message;
+      alertType.value = "success";
+    };
+
     const requestClaimLinkFn = async () => {
       if (ethInput.value.length === 0) {
         showAlertError("Error", "Please enter your ETH address or ENS name");
@@ -427,7 +434,11 @@ export default {
       const reqJson = await reqData.json();
       if (reqJson.error) {
         loadingShow.value = false;
-        showAlertError("Error", reqJson.error);
+        if (reqJson.status === 500) {
+          showAlertSuccess("Warning", reqJson.error);
+        } else {
+          showAlertError("Error", reqJson.error);
+        }
       }
 
       if (reqJson.link) {

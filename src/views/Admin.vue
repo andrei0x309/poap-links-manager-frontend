@@ -28,7 +28,12 @@
         />
       </div>
       <section>
-        <o-tabs vertical :expanded="true" v-model="curentTab">
+        <o-tabs
+          vertical
+          :expanded="false"
+          v-model="curentTab"
+          navTabsClass="adminMenu"
+        >
           <o-tab-item label="Add Claim Links" value="add-claim-links">
             <div class="py-6 sm:py-8 lg:py-12">
               <div class="max-w-screen-2xl px-4 md:px-8 mx-auto">
@@ -308,11 +313,10 @@
               </div>
             </div>
           </o-tab-item>
-
+          <!--
           <o-tab-item label="Edit Claim Password" value="edit-claim-pass">
             <div class="py-6 sm:py-8 lg:py-12">
               <div class="max-w-screen-2xl px-4 md:px-8 mx-auto">
-                <!-- text - start -->
                 <div class="mb-10 md:mb-16">
                   <h2
                     class="
@@ -327,9 +331,8 @@
                     Change Claim Password
                   </h2>
                 </div>
-                <!-- text - end -->
 
-                <!-- form - start -->
+
                 <form class="max-w-screen-md grid sm:grid-cols-2 gap-4 mx-auto">
                   <div class="sm:col-span-2">
                     <label
@@ -385,10 +388,11 @@
                     </button>
                   </div>
                 </form>
-                <!-- form - end -->
+                
               </div>
             </div>
           </o-tab-item>
+          -->
           <o-tab-item label="Add Past Event" value="add-past-event">
             <AddEditPastEvent
               v-model="pastEventComponentData"
@@ -1082,6 +1086,27 @@ export default {
 .modalDefault {
   min-width: 10rem;
   padding: 1rem;
+}
+
+.adminMenu {
+  .o-tabs__nav-item-wrapper {
+    padding: 0.8rem;
+  }
+  .o-tabs__nav-item {
+    color: #222;
+  }
+  .o-tabs__nav-item-default--active {
+    color: rgb(214, 151, 16);
+  }
+}
+
+html[class="dark"] .adminMenu {
+  .o-tabs__nav-item {
+    color: #fff;
+  }
+  .o-tabs__nav-item-default--active {
+    color: rgb(214, 151, 16);
+  }
 }
 
 .blinkTxt {

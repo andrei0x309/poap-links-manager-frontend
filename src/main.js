@@ -8,7 +8,7 @@ import "@oruga-ui/oruga-next/dist/oruga.css";
 import "atropos/atropos.min.css";
 import SplitInput from "vue-split-input";
 
-const ENDPOINTBASE = "https://yup-poap-backend.deno.dev";
+const ENDPOINTBASE = "https://dev-yup-poap-backend.deno.dev";
 
 createApp(App)
   .use(router)
