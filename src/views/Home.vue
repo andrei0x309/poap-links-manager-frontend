@@ -434,7 +434,7 @@ export default {
       const reqJson = await reqData.json();
       if (reqJson.error) {
         loadingShow.value = false;
-        if (reqJson.status === 500) {
+        if (reqData.status === 500) {
           showAlertSuccess("Warning", reqJson.error);
         } else {
           showAlertError("Error", reqJson.error);
