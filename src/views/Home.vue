@@ -486,7 +486,10 @@ export default {
             showSimpleSpinner.value = false;
             claimError.value = true;
             showClaimBlock.value = false;
-            showAlertError("Error", "Error while claiming");
+            showAlertSuccess(
+              "Warning",
+              `POAP API is down or POAP code missing, your PAOP badge will be automatically claimed to: [ ${ethInput.value} ] later.`
+            );
             return;
           }
           const checkTx = setInterval(() => {
