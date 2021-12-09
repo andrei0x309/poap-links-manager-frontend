@@ -195,7 +195,7 @@
 import { defineComponent } from "vue";
 
 export default defineComponent({
-  name: "Footer",
+  name: "FooterTemplate",
   components: {},
   setup() {
     const year = new Date().getFullYear();

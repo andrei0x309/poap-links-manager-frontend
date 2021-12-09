@@ -72,7 +72,7 @@ import { defineComponent, onMounted, ref, inject } from "vue";
 import { postData } from "@/util/index.js";
 
 export default defineComponent({
-  name: "Event",
+  name: "PastEvents",
   components: {},
   setup(props) {
     const endpointBase = inject("endPointBase");

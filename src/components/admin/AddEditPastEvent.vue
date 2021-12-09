@@ -19,21 +19,7 @@
             name="claim-year"
             v-model="url"
             @change="inputChanged()"
-            class="
-              w-full
-              bg-gray-50
-              text-gray-800
-              border
-              focus:ring
-              ring-indigo-300
-              rounded
-              outline-none
-              transition
-              duration-100
-              px-3
-              py-2
-              dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200
-            "
+            class="w-full bg-gray-50 text-gray-800 border focus:ring ring-indigo-300 rounded outline-none transition duration-100 px-3 py-2 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200"
           />
         </div>
 
@@ -45,21 +31,7 @@
             name="claim-year"
             v-model="eventDate"
             @change="inputChanged()"
-            class="
-              w-full
-              bg-gray-50
-              text-gray-800
-              border
-              focus:ring
-              ring-indigo-300
-              rounded
-              outline-none
-              transition
-              duration-100
-              px-3
-              py-2
-              dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200
-            "
+            class="w-full bg-gray-50 text-gray-800 border focus:ring ring-indigo-300 rounded outline-none transition duration-100 px-3 py-2 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200"
           />
         </div>
 
@@ -73,47 +45,14 @@
             name="claim-links"
             v-model="description"
             @change="inputChanged()"
-            class="
-              w-full
-              h-64
-              bg-gray-50
-              text-gray-800
-              border
-              focus:ring
-              ring-indigo-300
-              rounded
-              outline-none
-              transition
-              duration-100
-              px-3
-              py-2
-              dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200
-            "
+            class="w-full h-64 bg-gray-50 text-gray-800 border focus:ring ring-indigo-300 rounded outline-none transition duration-100 px-3 py-2 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200"
           ></textarea>
         </div>
 
         <div class="sm:col-span-2 flex justify-between items-center">
           <button
             @click.prevent="props.clickFn()"
-            class="
-              inline-block
-              bg-indigo-500
-              hover:bg-indigo-600
-              active:bg-indigo-700
-              focus-visible:ring
-              ring-indigo-300
-              text-white text-sm
-              md:text-base
-              font-semibold
-              text-center
-              rounded-lg
-              outline-none
-              transition
-              duration-100
-              px-8
-              py-3
-              dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200
-            "
+            class="inline-block bg-indigo-500 hover:bg-indigo-600 active:bg-indigo-700 focus-visible:ring ring-indigo-300 text-white text-sm md:text-base font-semibold text-center rounded-lg outline-none transition duration-100 px-8 py-3 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200"
           >
             {{ props.type === "add" ? `Add Past Event` : `Edit Past Event` }}
           </button>

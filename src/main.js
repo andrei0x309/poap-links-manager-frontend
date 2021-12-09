@@ -3,7 +3,14 @@ import App from "./App.vue";
 import "./registerServiceWorker";
 import { routes, router } from "./router";
 import { createHead } from "@vueuse/head";
-import { Dropdown, Button, Sidebar, Tabs, Modal } from "@oruga-ui/oruga-next";
+import {
+  Dropdown,
+  Button,
+  Sidebar,
+  Tabs,
+  Modal,
+  Datepicker,
+} from "@oruga-ui/oruga-next";
 import "@oruga-ui/oruga-next/dist/oruga.css";
 import "atropos/atropos.min.css";
 import SplitInput from "vue-split-input";
@@ -18,6 +25,7 @@ createApp(App)
   .use(Tabs)
   .use(Modal)
   .use(SplitInput)
+  .use(Datepicker)
   .use(createHead())
   .provide("endPointBase", ENDPOINTBASE)
   .provide("routes", routes)

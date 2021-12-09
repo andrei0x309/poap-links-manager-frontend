@@ -669,7 +669,7 @@ import { useHead } from "@vueuse/head";
 import { checkAlreadyLoginAdmin, postData } from "@/util/index.js";
 
 export default {
-  name: "Admin",
+  name: "AdminDashboard",
   components: {
     Alert,
     AddEditPastEvent,

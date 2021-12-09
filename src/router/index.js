@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
-import Home from "../views/Home.vue";
+import HomePage from "../views/HomePage.vue";
 import PageNotFound from "../views/PageNotFound.vue";
 
 const routes = [
@@ -17,31 +17,47 @@ const routes = [
   },
   {
     path: "/",
-    name: "Home",
-    component: Home,
+    name: "HomePage",
+    component: HomePage,
   },
   {
     path: "/code/:code",
     name: "HomeWithCode",
-    component: Home,
+    component: HomePage,
   },
   {
     path: "/login",
-    name: "Login",
+    name: "AdminLogin",
     component: () =>
-      import(/* webpackChunkName: "login" */ "../views/Login.vue"),
+      import(/* webpackChunkName: "login" */ "../views/AdminLogin.vue"),
   },
   {
     path: "/admin",
-    name: "Admin",
+    name: "AdminDashboard",
     component: () =>
-      import(/* webpackChunkName: "admin" */ "../views/Admin.vue"),
+      import(/* webpackChunkName: "admin" */ "../views/AdminDashboard.vue"),
   },
   {
     path: "/past-events",
     name: "PastEvents",
     component: () =>
       import(/* webpackChunkName: "events" */ "../views/PastEvents.vue"),
+  },
+  {
+    path: "/meeting-recordings",
+    name: "MeetingRecordings",
+    component: () =>
+      import(
+        /* webpackChunkName: "meetingRecordings" */ "../views/MeetingRecordings.vue"
+      ),
+  },
+  {
+    path: "/meeting-recording/:id",
+    name: "SingleMeetingRecording",
+    component: () =>
+      import(
+        /* webpackChunkName: "singleMeetingRecording" */ "../views/SingleMeetingRecording.vue"
+      ),
   },
   {
     type: "yup",

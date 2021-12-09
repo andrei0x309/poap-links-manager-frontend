@@ -146,6 +146,20 @@
             >Past Events</a
           >
           <a
+            href="/meeting-recordings"
+            class="
+              text-gray-800
+              dark:text-gray-200
+              hover:text-yellow-500
+              active:text-yellow-700
+              text-lg
+              font-semibold
+              transition
+              duration-100
+            "
+            >Meeting Recordings</a
+          >
+          <a
             href="/admin"
             class="
               text-gray-800
@@ -267,7 +281,7 @@ import { useRoute } from "vue-router";
 import { getThemeMode } from "@/util/index.js";
 
 export default defineComponent({
-  name: "Header",
+  name: "HeaderTemplate",
   components: {},
   setup(props) {
     const route = useRoute();

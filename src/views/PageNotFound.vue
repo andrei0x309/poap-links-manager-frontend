@@ -4,36 +4,15 @@
       <div class="grid sm:grid-cols-2 gap-8">
         <!-- content - start -->
         <div
-          class="
-            flex flex-col
-            justify-center
-            items-center
-            sm:items-start
-            md:py-24
-            lg:py-32
-          "
+          class="flex flex-col justify-center items-center sm:items-start md:py-24 lg:py-32"
         >
           <p
-            class="
-              text-yellow-500 text-sm
-              md:text-base
-              font-semibold
-              uppercase
-              mb-4
-            "
+            class="text-yellow-500 text-sm md:text-base font-semibold uppercase mb-4"
           >
             Error 404
           </p>
           <h1
-            class="
-              text-gray-800 text-2xl
-              md:text-3xl
-              font-bold
-              text-center
-              sm:text-left
-              mb-2
-              dark:text-gray-100
-            "
+            class="text-gray-800 text-2xl md:text-3xl font-bold text-center sm:text-left mb-2 dark:text-gray-100"
           >
             Page not found
           </h1>
@@ -44,25 +23,7 @@
 
           <a
             href="/"
-            class="
-              inline-block
-              bg-gray-200
-              hover:bg-gray-300
-              focus-visible:ring
-              ring-indigo-300
-              text-gray-500
-              active:text-gray-700
-              text-sm
-              md:text-base
-              font-semibold
-              text-center
-              rounded-lg
-              outline-none
-              transition
-              duration-100
-              px-8
-              py-3
-            "
+            class="inline-block bg-gray-200 hover:bg-gray-300 focus-visible:ring ring-indigo-300 text-gray-500 active:text-gray-700 text-sm md:text-base font-semibold text-center rounded-lg outline-none transition duration-100 px-8 py-3"
             >Go home</a
           >
         </div>
@@ -70,15 +31,7 @@
 
         <!-- image - start -->
         <div
-          class="
-            h-80
-            md:h-auto
-            bg-gray-100
-            overflow-hidden
-            shadow-lg
-            rounded-lg
-            relative
-          "
+          class="h-80 md:h-auto bg-gray-100 overflow-hidden shadow-lg rounded-lg relative"
         >
           <img
             src="https://images.unsplash.com/photo-1590642916589-592bca10dfbf?auto=format&q=75&fit=crop&w=600"

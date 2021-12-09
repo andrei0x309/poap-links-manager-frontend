@@ -1,21 +1,12 @@
 <template>
   <div class="dark:bg-gray-800 dark:text-white bg-white py-6 sm:py-8 lg:py-12">
     <div
-      class="
-        glass
-        max-w-screen-lg
-        px-4
-        md:px-8
-        mx-auto
-        flex
-        items-center
-        flex-row
-      "
+      class="glass max-w-screen-lg px-4 md:px-8 mx-auto flex items-center flex-row"
       style="min-height: 60vh"
     >
       <Loading :show="loadingShow" :msg="loadingMsg" />
 
-      <div v-if="!loadingShow" class="mx-auto" style="margin-top: -4rem">
+      <div v-if="!loadingShow" class="mx-auto" style="margin-top: -1rem">
         <div
           class="dark:bg-transparent bg-white py-4 sm:py-6 lg:py-8 px-8 mt-4"
         >
@@ -78,15 +69,7 @@
             class="max-w-screen-2xl px-4 md:px-8 mx-auto"
           >
             <h2
-              class="
-                text-gray-800 text-2xl
-                dark:text-white
-                lg:text-3xl
-                font-bold
-                text-center
-                mb-4
-                md:mb-8
-              "
+              class="text-gray-800 text-2xl dark:text-white lg:text-3xl font-bold text-center mb-4 md:mb-8"
             >
               Get YUP POAP Claim Link
             </h2>
@@ -104,56 +87,18 @@
                 <div v-if="!hasMetaMask">
                   <label
                     for="eth"
-                    class="
-                      dark:text-white
-                      inline-block
-                      text-gray-800 text-sm
-                      sm:text-base
-                      mb-2
-                    "
+                    class="dark:text-white inline-block text-gray-800 text-sm sm:text-base mb-2"
                     >ETH address / ENS name</label
                   >
                   <input
                     name="eth"
                     v-model="ethInput"
-                    class="
-                      w-full
-                      bg-gray-50
-                      text-gray-800
-                      border
-                      focus:ring
-                      ring-indigo-300
-                      rounded
-                      outline-none
-                      transition
-                      duration-100
-                      px-3
-                      py-2
-                      dark:bg-gray-800 dark:text-white
-                    "
+                    class="w-full bg-gray-50 text-gray-800 border focus:ring ring-indigo-300 rounded outline-none transition duration-100 px-3 py-2 dark:bg-gray-800 dark:text-white"
                   />
                 </div>
                 <div
                   @click="metamaskConnect"
-                  class="
-                    block
-                    bg-gray-800
-                    hover:bg-gray-700
-                    active:bg-gray-600
-                    focus-visible:ring
-                    ring-gray-300
-                    text-white text-sm
-                    md:text-base
-                    font-semibold
-                    text-center
-                    rounded-lg
-                    outline-none
-                    transition
-                    duration-100
-                    px-8
-                    py-3
-                    dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200
-                  "
+                  class="block bg-gray-800 hover:bg-gray-700 active:bg-gray-600 focus-visible:ring ring-gray-300 text-white text-sm md:text-base font-semibold text-center rounded-lg outline-none transition duration-100 px-8 py-3 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200"
                   style="cursor: pointer"
                   v-else-if="!isMetaMaskConnected"
                 >
@@ -175,13 +120,7 @@
                 <div>
                   <label
                     for="password"
-                    class="
-                      dark:text-white
-                      inline-block
-                      text-gray-800 text-sm
-                      sm:text-base
-                      mb-2
-                    "
+                    class="dark:text-white inline-block text-gray-800 text-sm sm:text-base mb-2"
                     >Digit <b>pin</b> from Gather</label
                   >
                   <div
@@ -228,25 +167,7 @@
 
                 <button
                   @click.prevent="requestClaimLinkFn()"
-                  class="
-                    block
-                    bg-gray-800
-                    hover:bg-gray-700
-                    active:bg-gray-600
-                    focus-visible:ring
-                    ring-gray-300
-                    text-white text-sm
-                    md:text-base
-                    font-semibold
-                    text-center
-                    rounded-lg
-                    outline-none
-                    transition
-                    duration-100
-                    px-8
-                    py-3
-                    dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200
-                  "
+                  class="block bg-gray-800 hover:bg-gray-700 active:bg-gray-600 focus-visible:ring ring-gray-300 text-white text-sm md:text-base font-semibold text-center rounded-lg outline-none transition duration-100 px-8 py-3 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200"
                 >
                   Claim
                 </button>
@@ -254,13 +175,7 @@
                 <div class="flex justify-center items-center relative">
                   <span class="h-px bg-gray-300 absolute inset-x-0"></span>
                   <span
-                    class="
-                      dark:bg-gray-800 dark:text-white
-                      bg-white
-                      text-gray-400 text-sm
-                      relative
-                      px-4
-                    "
+                    class="dark:bg-gray-800 dark:text-white bg-white text-gray-400 text-sm relative px-4"
                     ><!-- Number of claim links left / Not implemented Yet --></span
                   >
                 </div>
@@ -282,29 +197,14 @@
         </div>
 
         <div
-          class="
-            dark:bg-gray-800 dark:text-white
-            flex
-            justify-center
-            items-center
-            bg-gray-100
-            p-4
-            mb-2
-            rounded
-          "
+          class="dark:bg-gray-800 dark:text-white flex justify-center items-center bg-gray-100 p-4 mb-2 rounded"
         >
           <p class="text-gray-500 text-sm text-center">
             Want to get a <b>POAP</b>? You can get one for participation in the
             meeting held on every <b> Thursday at 11 UTC</b> in:
             <a
               href="https://castle.yup.io"
-              class="
-                text-indigo-500
-                hover:text-indigo-600
-                active:text-indigo-700
-                transition
-                duration-100
-              "
+              class="text-indigo-500 hover:text-indigo-600 active:text-indigo-700 transition duration-100"
               >YUP Gather Space</a
             >
           </p>
@@ -328,7 +228,7 @@ import { ethers } from "ethers";
 import SimpleSpinner from "@/components/admin/SimpleSpinner";
 
 export default {
-  name: "Home",
+  name: "HomePage",
   components: {
     Alert,
     Loading,
@@ -506,7 +406,10 @@ export default {
               });
           }, 500);
         } else {
-          showAlertError("Error", "Error while claiming");
+          showAlertSuccess(
+            "Warning",
+            `Error with POAP API the system will claim to: [ ${ethInput.value} ] later.`
+          );
           showSimpleSpinner.value = false;
           claimError.value = true;
           showClaimBlock.value = false;

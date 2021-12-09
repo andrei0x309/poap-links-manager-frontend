@@ -102,7 +102,7 @@ import { useHead } from "@vueuse/head";
 import { postData, checkAlreadyLogin } from "@/util/index.js";
 
 export default {
-  name: "Login",
+  name: "AdminLogin",
   components: {
     Alert,
   },

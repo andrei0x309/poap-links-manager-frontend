@@ -48,7 +48,7 @@ import { defineComponent, computed } from "vue";
 import { getThemeMode } from "@/util/index.js";
 
 export default defineComponent({
-  name: "Alert",
+  name: "Loading",
   props: {
     show: {
       required: true,
