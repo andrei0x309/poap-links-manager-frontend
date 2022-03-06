@@ -70,10 +70,13 @@
 <script>
 import { defineComponent, onMounted, ref, inject } from "vue";
 import { postData } from "@/util/index.js";
+import Alert from "@/components/Alert";
 
 export default defineComponent({
   name: "PastEvents",
-  components: {},
+  components: {
+    Alert
+  },
   setup(props) {
     const endpointBase = inject("endPointBase");
     const alertHidden = ref(true);

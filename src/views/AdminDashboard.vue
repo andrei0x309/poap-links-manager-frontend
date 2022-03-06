@@ -1,15 +1,7 @@
 <template>
   <div class="dark:bg-gray-800 dark:text-white bg-white py-6 sm:py-8 lg:py-12">
     <div
-      class="
-        glass
-        max-w-screen-lg
-        px-4
-        md:px-8
-        mx-auto
-        text-gray-800
-        dark:text-white
-      "
+      class="glass max-w-screen-lg px-4 md:px-8 mx-auto text-gray-800 dark:text-white"
       style="min-height: 60vh"
     >
       <div class="mb-10 md:mb-16">
@@ -40,14 +32,7 @@
                 <!-- text - start -->
                 <div class="mb-10 md:mb-16">
                   <h2
-                    class="
-                      text-2xl
-                      lg:text-3xl
-                      font-bold
-                      text-center
-                      mb-4
-                      md:mb-6
-                    "
+                    class="text-2xl lg:text-3xl font-bold text-center mb-4 md:mb-6"
                   >
                     Add Claim Links
                   </h2>
@@ -65,21 +50,7 @@
                     <input
                       name="claim-day"
                       v-model="claimLinksDay"
-                      class="
-                        w-full
-                        bg-gray-50
-                        text-gray-800
-                        border
-                        focus:ring
-                        ring-indigo-300
-                        rounded
-                        outline-none
-                        transition
-                        duration-100
-                        px-3
-                        py-2
-                        dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200
-                      "
+                      class="w-full bg-gray-50 text-gray-800 border focus:ring ring-indigo-300 rounded outline-none transition duration-100 px-3 py-2 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200"
                     />
                   </div>
 
@@ -92,21 +63,7 @@
                     <input
                       name="claim-month"
                       v-model="claimLinksMonth"
-                      class="
-                        w-full
-                        bg-gray-50
-                        text-gray-800
-                        border
-                        focus:ring
-                        ring-indigo-300
-                        rounded
-                        outline-none
-                        transition
-                        duration-100
-                        px-3
-                        py-2
-                        dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200
-                      "
+                      class="w-full bg-gray-50 text-gray-800 border focus:ring ring-indigo-300 rounded outline-none transition duration-100 px-3 py-2 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200"
                     />
                   </div>
 
@@ -119,21 +76,7 @@
                     <input
                       name="claim-year"
                       v-model="claimLinksYear"
-                      class="
-                        w-full
-                        bg-gray-50
-                        text-gray-800
-                        border
-                        focus:ring
-                        ring-indigo-300
-                        rounded
-                        outline-none
-                        transition
-                        duration-100
-                        px-3
-                        py-2
-                        dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200
-                      "
+                      class="w-full bg-gray-50 text-gray-800 border focus:ring ring-indigo-300 rounded outline-none transition duration-100 px-3 py-2 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200"
                     />
                   </div>
 
@@ -146,47 +89,14 @@
                     <textarea
                       name="claim-links"
                       v-model="claimLinksList"
-                      class="
-                        w-full
-                        h-64
-                        bg-gray-50
-                        text-gray-800
-                        border
-                        focus:ring
-                        ring-indigo-300
-                        rounded
-                        outline-none
-                        transition
-                        duration-100
-                        px-3
-                        py-2
-                        dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200
-                      "
+                      class="w-full h-64 bg-gray-50 text-gray-800 border focus:ring ring-indigo-300 rounded outline-none transition duration-100 px-3 py-2 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200"
                     ></textarea>
                   </div>
 
                   <div class="sm:col-span-2 flex justify-between items-center">
                     <button
                       @click.prevent="addClaimLinksFn"
-                      class="
-                        inline-block
-                        bg-indigo-500
-                        hover:bg-indigo-600
-                        active:bg-indigo-700
-                        focus-visible:ring
-                        ring-indigo-300
-                        text-white text-sm
-                        md:text-base
-                        font-semibold
-                        text-center
-                        rounded-lg
-                        outline-none
-                        transition
-                        duration-100
-                        px-8
-                        py-3
-                        dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200
-                      "
+                      class="inline-block bg-indigo-500 hover:bg-indigo-600 active:bg-indigo-700 focus-visible:ring ring-indigo-300 text-white text-sm md:text-base font-semibold text-center rounded-lg outline-none transition duration-100 px-8 py-3 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200"
                     >
                       Add Claim Links
                     </button>
@@ -210,23 +120,11 @@
               <div class="col-span-12">
                 <div class="overflow-auto lg:overflow-visible">
                   <table
-                    class="
-                      table
-                      dark:text-gray-400
-                      text-gray-700
-                      border-separate
-                      space-y-6
-                      text-sm
-                    "
+                    class="table dark:text-gray-400 text-gray-700 border-separate space-y-6 text-sm"
                     style="min-width: calc(20rem + 30vw)"
                   >
                     <thead
-                      class="
-                        dark:bg-gray-800
-                        bg-gray-200
-                        dark:text-gray-500
-                        text-gray-800
-                      "
+                      class="dark:bg-gray-800 bg-gray-200 dark:text-gray-500 text-gray-800"
                     >
                       <tr>
                         <th class="p-2 text-center">Claim Date</th>
@@ -415,23 +313,11 @@
               <div class="col-span-12">
                 <div class="overflow-auto lg:overflow-visible">
                   <table
-                    class="
-                      table
-                      dark:text-gray-400
-                      text-gray-700
-                      border-separate
-                      space-y-6
-                      text-sm
-                    "
+                    class="table dark:text-gray-400 text-gray-700 border-separate space-y-6 text-sm"
                     style="min-width: calc(20rem + 30vw)"
                   >
                     <thead
-                      class="
-                        dark:bg-gray-800
-                        bg-gray-200
-                        dark:text-gray-500
-                        text-gray-800
-                      "
+                      class="dark:bg-gray-800 bg-gray-200 dark:text-gray-500 text-gray-800"
                     >
                       <tr>
                         <th class="p-2 text-center">Date</th>
@@ -453,12 +339,7 @@
                         <td class="p-2">{{ entry.description }}</td>
                         <td class="p-2">
                           <button
-                            class="
-                              gray-500
-                              hover:text-gray-800
-                              dark:text-gray-400 dark:hover:text-gray-100
-                              mx-2
-                            "
+                            class="gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-100 mx-2"
                             @click.prevent="openEditPastEventFn(entry.id)"
                           >
                             <svg
@@ -496,12 +377,7 @@
                             </svg>
                           </button>
                           <button
-                            class="
-                              gray-500
-                              hover:text-gray-800
-                              dark:text-gray-400 dark:hover:text-gray-100
-                              ml-2
-                            "
+                            class="gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-100 ml-2"
                             @click.prevent="deletePastEventFn(entry.id, index)"
                           >
                             <svg
@@ -540,50 +416,13 @@
 
       <button
         @click.prevent="confirmDialogCancelFn"
-        class="
-          inline-block
-          bg-indigo-500
-          hover:bg-indigo-600
-          active:bg-indigo-700
-          focus-visible:ring
-          ring-indigo-300
-          text-white text-sm
-          md:text-base
-          font-semibold
-          text-center
-          rounded-lg
-          outline-none
-          transition
-          duration-100
-          px-8
-          py-3
-          dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200
-          mr-4
-        "
+        class="inline-block bg-indigo-500 hover:bg-indigo-600 active:bg-indigo-700 focus-visible:ring ring-indigo-300 text-white text-sm md:text-base font-semibold text-center rounded-lg outline-none transition duration-100 px-8 py-3 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 mr-4"
       >
         Cancel
       </button>
       <button
         @click.prevent="confirmDialogConfirmFn"
-        class="
-          inline-block
-          bg-indigo-500
-          hover:bg-indigo-600
-          active:bg-indigo-700
-          focus-visible:ring
-          ring-indigo-300
-          text-white text-sm
-          md:text-base
-          font-semibold
-          text-center
-          rounded-lg
-          outline-none
-          transition
-          duration-100
-          px-8
-          py-3
-          dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200
-        "
+        class="inline-block bg-indigo-500 hover:bg-indigo-600 active:bg-indigo-700 focus-visible:ring ring-indigo-300 text-white text-sm md:text-base font-semibold text-center rounded-lg outline-none transition duration-100 px-8 py-3 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200"
       >
         Yes
       </button>
@@ -677,7 +516,7 @@ export default {
   },
   setup() {
     const endpointBase = inject("endPointBase");
-    const origin = window.location.origin;
+    const origin = "https://yup-poap.pages.dev";
     const curentTab = ref("add-claim-links");
 
     const editPastEventModal = ref(false);

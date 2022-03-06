@@ -60,6 +60,14 @@ const routes = [
       ),
   },
   {
+    path: "/fix-profile-previews",
+    name: "FixProfilePreviews",
+    component: () =>
+      import(
+        /* webpackChunkName: "fixProfilePreviews" */ "../views/FixProfilePreviews.vue"
+      ),
+  },
+  {
     type: "yup",
     text: "YUP APP",
     path: "/app",

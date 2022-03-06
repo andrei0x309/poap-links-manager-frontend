@@ -298,6 +298,10 @@ html[class="dark"] {
   background-color: transparent;
 }
 
+.o-sel {
+  background-color: var(--calendar-background);
+}
+
 .o-dpck {
   font-size: 1rem;
 }
