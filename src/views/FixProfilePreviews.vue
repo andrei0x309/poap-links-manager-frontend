@@ -70,7 +70,7 @@
 
 <script>
 import { defineComponent, onMounted, ref } from "vue";
-import { getData,  } from "@/util/index.js"; // postData
+import { getData, postData } from "@/util/index.js";
 import Alert from "@/components/Alert";
 import SimpleSpinner from "@/components/admin/SimpleSpinner";
 
@@ -146,14 +146,13 @@ export default defineComponent({
         const votes = await reqVotes.json();
         console.log(votes)
         for(const vote of votes){
-            // const postId = vote.postid
-            // await postData(`${YUP_API_BASE}/posts/re-fetch/preview`, {
-            //     postId
-            //     })
-            console.log(vote.postid)
+            const postId = vote.postid
+            await postData(`${YUP_API_BASE}/posts/re-fetch/preview`, {
+                postId
+                })
                 count.value = count.value + 1
                 console.log(count.value)
-                await new Promise(resolve => setTimeout(resolve, 1000));
+                await new Promise(resolve => setTimeout(resolve, 50));
         }
         showFixLoader.value = false;
         localStorage.setItem("endMsgShow", true)
