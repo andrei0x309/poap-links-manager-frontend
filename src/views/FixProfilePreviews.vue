@@ -146,9 +146,9 @@ export default defineComponent({
         const votes = await reqVotes.json();
         console.log(votes)
         for(const vote of votes){
-            const postId = vote.postid
+            const postid = vote.postid
             await postData(`${YUP_API_BASE}/posts/re-fetch/preview`, {
-                postId
+                postid
                 })
                 count.value = count.value + 1
                 console.log(count.value)
