@@ -105,6 +105,7 @@ export default defineComponent({
 
     return {
       dbPastEvents,
+      alertHidden,
       props,
     };
   },
